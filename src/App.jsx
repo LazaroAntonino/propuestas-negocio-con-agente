@@ -1,10 +1,11 @@
 
-import './App.css'
+import React from 'react';
+
+import './components/Chatbot.css';
+import Chatbot from './components/Chatbot.jsx';
 
 function App() {
-  return (
-    <h1>Hello World</h1>
-  )
+  return <Chatbot />;
 }
 
-export default App
+export default App;

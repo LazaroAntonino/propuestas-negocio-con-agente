@@ -1,0 +1,100 @@
+
+import React, { useState, useRef, useEffect } from 'react';
+import './Chatbot.css';
+
+
+function Chatbot() {
+  const [messages, setMessages] = useState([
+    { role: 'assistant', content: '¡Hola! Soy tu asistente. ¿En qué puedo ayudarte?' }
+  ]);
+  const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const messagesEndRef = useRef(null);
+
+  // Scroll to bottom on new message
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, loading]);
+
+  const sendMessage = async (e) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+
+    const userMsg = { role: 'user', content: input };
+    setMessages((msgs) => [...msgs, userMsg]);
+    setInput('');
+    setLoading(true);
+
+    // Mostrar "pensando" animado
+    setMessages((msgs) => [
+      ...msgs,
+      { role: 'assistant', content: '', thinking: true }
+    ]);
+
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: input }),
+      });
+      const data = await res.json();
+      setMessages((msgs) => {
+        // Reemplaza el mensaje "pensando" por la respuesta real
+        const msgsCopy = [...msgs];
+        if (msgsCopy.length && msgsCopy[msgsCopy.length - 1].thinking) {
+          msgsCopy.pop();
+        }
+        return [...msgsCopy, { role: 'assistant', content: data.reply }];
+      });
+    } catch {
+      setMessages((msgs) => {
+        const msgsCopy = [...msgs];
+        if (msgsCopy.length && msgsCopy[msgsCopy.length - 1].thinking) {
+          msgsCopy.pop();
+        }
+        return [...msgsCopy, { role: 'assistant', content: 'Error al conectar con el servidor.' }];
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="chatbot-fullscreen">
+      <div className="chatbot-window">
+        <div className="chatbot-header">Chatbot</div>
+        <div className="chatbot-messages">
+          {messages.map((msg, i) =>
+            msg.thinking ? (
+              <div key={i} className="chatbot-msg assistant thinking" aria-live="polite">
+                Pensando
+                <span className="thinking-dots">
+                  <span>.</span><span>.</span><span>.</span>
+                </span>
+              </div>
+            ) : (
+              <div key={i} className={`chatbot-msg ${msg.role}`}>{msg.content}</div>
+            )
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+        <form className="chatbot-form" onSubmit={sendMessage}>
+          <input
+            type="text"
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            placeholder="Escribe tu mensaje..."
+            disabled={loading}
+            autoFocus
+            aria-label="Escribe tu mensaje"
+          />
+          <button type="submit" disabled={loading || !input.trim()}>
+            {loading ? 'Enviando...' : 'Enviar'}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+export default Chatbot;
