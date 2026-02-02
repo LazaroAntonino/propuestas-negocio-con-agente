@@ -9,6 +9,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Servir archivos estáticos del frontend en producción
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../dist')));
+}
+
 // IDs de los Assistants de OpenAI (configúralos en .env)
 const MAIN_AGENT_ID = process.env.MAIN_AGENT_ID; // Agente de propuesta
 const ANALYTICS_AGENT_ID = process.env.ANALYTICS_AGENT_ID; // Agente analista
@@ -224,6 +229,13 @@ app.get('/api/health', (req, res) => {
     timestamp: new Date().toISOString() 
   });
 });
+
+// Catch-all: servir el frontend para cualquier ruta que no sea API (producción)
+if (process.env.NODE_ENV === 'production') {
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
+  });
+}
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
