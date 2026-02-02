@@ -16,7 +16,6 @@ const getSessionId = () => {
 const pushToDataLayer = (analyticsData) => {
   if (typeof window !== 'undefined' && window.dataLayer && analyticsData) {
     window.dataLayer.push(analyticsData);
-    console.log('📊 DataLayer push:', analyticsData);
   }
 };
 
@@ -26,13 +25,24 @@ function Chatbot() {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef(null);
   const sessionId = useRef(getSessionId());
 
-  // Scroll to bottom on new message
+  // Scroll suave al final cuando hay nuevos mensajes
+  const scrollToBottom = () => {
+    if (messagesContainerRef.current) {
+      const container = messagesContainerRef.current;
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Solo hacer scroll cuando cambian los mensajes
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, loading]);
+    scrollToBottom();
+  }, [messages]);
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -139,7 +149,7 @@ function Chatbot() {
           </button>
           <div className="chatbot-header-divider" aria-hidden="true"></div>
         </header>
-        <div className="chatbot-messages">
+        <div className="chatbot-messages" ref={messagesContainerRef}>
           {messages.map((msg, i) =>
             msg.thinking ? (
               <div key={i} className="chatbot-msg assistant thinking" aria-live="polite">
@@ -151,7 +161,7 @@ function Chatbot() {
               <div key={i} className={`chatbot-msg ${msg.role}`}>{msg.content}</div>
             )
           )}
-          <div ref={messagesEndRef} />
+          <div className="chatbot-messages-anchor" aria-hidden="true" />
         </div>
         <form className="chatbot-form" onSubmit={sendMessage}>
           <input
