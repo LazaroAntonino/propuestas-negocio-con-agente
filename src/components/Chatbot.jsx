@@ -2,14 +2,32 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './Chatbot.css';
 
+// Generar un sessionId único para esta sesión
+const getSessionId = () => {
+  let sessionId = sessionStorage.getItem('chatbot_session_id');
+  if (!sessionId) {
+    sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    sessionStorage.setItem('chatbot_session_id', sessionId);
+  }
+  return sessionId;
+};
+
+// Función para enviar eventos al dataLayer de GTM
+const pushToDataLayer = (analyticsData) => {
+  if (typeof window !== 'undefined' && window.dataLayer && analyticsData) {
+    window.dataLayer.push(analyticsData);
+    console.log('📊 DataLayer push:', analyticsData);
+  }
+};
 
 function Chatbot() {
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'Bienvenido. Soy tu asistente especializado en propuestas de negocio. ¿En qué puedo ayudarte hoy?' }
+    { role: 'assistant', content: 'Bienvenido. Soy tu asistente para resolver dudas sobre la propuesta de negocio. ¿En qué puedo ayudarte?' }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  const sessionId = useRef(getSessionId());
 
   // Scroll to bottom on new message
   useEffect(() => {
@@ -20,7 +38,8 @@ function Chatbot() {
     e.preventDefault();
     if (!input.trim()) return;
 
-    const userMsg = { role: 'user', content: input };
+    const userMessage = input;
+    const userMsg = { role: 'user', content: userMessage };
     setMessages((msgs) => [...msgs, userMsg]);
     setInput('');
     setLoading(true);
@@ -35,9 +54,13 @@ function Chatbot() {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: input }),
+        body: JSON.stringify({ 
+          message: userMessage,
+          sessionId: sessionId.current
+        }),
       });
       const data = await res.json();
+      
       setMessages((msgs) => {
         // Reemplaza el mensaje "pensando" por la respuesta real
         const msgsCopy = [...msgs];
@@ -46,6 +69,12 @@ function Chatbot() {
         }
         return [...msgsCopy, { role: 'assistant', content: data.reply }];
       });
+
+      // Enviar datos de analytics al dataLayer
+      if (data.analytics) {
+        pushToDataLayer(data.analytics);
+      }
+
     } catch {
       setMessages((msgs) => {
         const msgsCopy = [...msgs];
@@ -54,8 +83,41 @@ function Chatbot() {
         }
         return [...msgsCopy, { role: 'assistant', content: 'Error al conectar con el servidor.' }];
       });
+
+      // Enviar evento de error al dataLayer
+      pushToDataLayer({
+        event: 'chatbot_error',
+        error_type: 'connection_error',
+        mensaje_usuario: userMessage,
+        timestamp: new Date().toISOString()
+      });
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Función para resetear la conversación
+  const resetConversation = async () => {
+    try {
+      await fetch('/api/chat/reset', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId: sessionId.current }),
+      });
+      
+      setMessages([
+        { role: 'assistant', content: 'Bienvenido. Soy tu asistente para resolver dudas sobre la propuesta de negocio. ¿En qué puedo ayudarte?' }
+      ]);
+
+      // Evento de reset al dataLayer
+      pushToDataLayer({
+        event: 'chatbot_reset',
+        sessionId: sessionId.current,
+        timestamp: new Date().toISOString()
+      });
+
+    } catch (error) {
+      console.error('Error al resetear:', error);
     }
   };
 
@@ -68,6 +130,13 @@ function Chatbot() {
         <header className="chatbot-header">
           <h1 className="chatbot-header-title">Propuestas de Negocio</h1>
           <p className="chatbot-header-subtitle">VML The Cocktail • Asistente</p>
+          <button 
+            className="chatbot-reset-btn" 
+            onClick={resetConversation}
+            title="Nueva conversación"
+          >
+            🔄
+          </button>
           <div className="chatbot-header-divider" aria-hidden="true"></div>
         </header>
         <div className="chatbot-messages">

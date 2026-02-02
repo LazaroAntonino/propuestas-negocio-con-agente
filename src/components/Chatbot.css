@@ -152,6 +152,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  position: relative;
 }
 
 .chatbot-header-title {
@@ -171,6 +172,26 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin: 0;
+}
+
+.chatbot-reset-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: var(--vml-gray);
+  border: 1px solid var(--vml-gray-light);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: all 0.2s var(--transition-smooth);
+}
+
+.chatbot-reset-btn:hover {
+  opacity: 1;
+  background: var(--vml-gray-light);
+  transform: rotate(90deg);
 }
 
 .chatbot-header-divider {
