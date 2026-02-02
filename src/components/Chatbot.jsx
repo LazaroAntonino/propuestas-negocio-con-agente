@@ -5,7 +5,7 @@ import './Chatbot.css';
 
 function Chatbot() {
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: '¡Hola! Soy tu asistente. ¿En qué puedo ayudarte?' }
+    { role: 'assistant', content: 'Bienvenido. Soy tu asistente especializado en propuestas de negocio. ¿En qué puedo ayudarte hoy?' }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -61,15 +61,21 @@ function Chatbot() {
 
   return (
     <div className="chatbot-fullscreen">
+      {/* Noise texture overlay */}
+      <div className="background-noise" aria-hidden="true"></div>
+      
       <div className="chatbot-window">
-        <div className="chatbot-header">Chatbot</div>
+        <header className="chatbot-header">
+          <h1 className="chatbot-header-title">Propuestas de Negocio</h1>
+          <p className="chatbot-header-subtitle">VML The Cocktail • Asistente</p>
+          <div className="chatbot-header-divider" aria-hidden="true"></div>
+        </header>
         <div className="chatbot-messages">
           {messages.map((msg, i) =>
             msg.thinking ? (
               <div key={i} className="chatbot-msg assistant thinking" aria-live="polite">
-                Pensando
                 <span className="thinking-dots">
-                  <span>.</span><span>.</span><span>.</span>
+                  <span></span><span></span><span></span>
                 </span>
               </div>
             ) : (
@@ -83,10 +89,10 @@ function Chatbot() {
             type="text"
             value={input}
             onChange={e => setInput(e.target.value)}
-            placeholder="Escribe tu mensaje..."
+            placeholder="Escribe tu consulta..."
             disabled={loading}
             autoFocus
-            aria-label="Escribe tu mensaje"
+            aria-label="Escribe tu consulta"
           />
           <button type="submit" disabled={loading || !input.trim()}>
             {loading ? 'Enviando...' : 'Enviar'}
