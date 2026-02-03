@@ -35,7 +35,36 @@
   overflow: hidden;
   background: var(--vml-beige);
 }
+/* Base gradient layer */
+.chatbot-fullscreen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(62, 76, 99, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 80% at 80% 20%, rgba(60, 100, 180, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 60% at 70% 80%, rgba(180, 100, 120, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 30% 90%, rgba(100, 140, 160, 0.15) 0%, transparent 50%);
+  animation: gradientShift 20s ease-in-out infinite alternate;
+  z-index: 1;
+}
 
+/* Floating orbs layer */
+.chatbot-fullscreen::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle 500px at 10% 30%, rgba(140, 90, 180, 0.10) 0%, transparent 60%),
+    radial-gradient(circle 450px at 85% 70%, rgba(80, 130, 200, 0.10) 0%, transparent 60%),
+    radial-gradient(circle 400px at 50% 50%, rgba(160, 80, 100, 0.10) 0%, transparent 60%);
+  animation: orbFloat 30s ease-in-out infinite;
+  z-index: 1;
+  pointer-events: none;
+}
 
 @keyframes gradientShift {
   0% {
@@ -275,14 +304,15 @@ transform: rotate(-90deg); /* Rotación antihoraria */
 }
 
 .chatbot-msg.thinking {
-  background: var(--vml-gray-dark);
-  color: var(--vml-text-muted);
+  background: oklch(98.463% 0.00181 249.248 / 0.5);
+  color: oklch(37.3% 0.034 259.733);
   font-style: normal;
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  border: 1px solid var(--vml-gray);
+  border: 1px solid oklch(96.696% 0.00298 264.792 / 0.499);
   border-radius: 20px 20px 20px 6px;
+  width: 10%;
 }
 
 /* ============ THINKING ANIMATION ============ */
