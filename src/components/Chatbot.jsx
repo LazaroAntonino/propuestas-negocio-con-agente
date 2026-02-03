@@ -1,5 +1,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import './Chatbot.css';
 
 // Generar un sessionId único para esta sesión
@@ -158,7 +160,9 @@ function Chatbot() {
                 </span>
               </div>
             ) : (
-              <div key={i} className={`chatbot-msg ${msg.role}`}>{msg.content}</div>
+              <div key={i} className={`chatbot-msg ${msg.role}`}>
+                <Markdown remarkPlugins={[remarkGfm]}>{msg.content}</Markdown>
+              </div>
             )
           )}
           <div className="chatbot-messages-anchor" aria-hidden="true" />

@@ -172,6 +172,7 @@ app.post('/api/chat', async (req, res) => {
     // 2. Ejecutar el agente principal
     const reply = await runAssistant(threadId, MAIN_AGENT_ID, message);
     console.log('🤖 Respuesta del agente:', reply.substring(0, 100) + '...');
+    console.log('🔍 Tiene saltos de línea:', reply.includes('\n'), '| Cantidad:', (reply.match(/\n/g) || []).length);
 
     // 3. Ejecutar el agente analista (no bloquea la respuesta principal)
     let analyticsData = null;
