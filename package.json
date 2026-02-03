@@ -12,6 +12,7 @@
     "start": "cd server && NODE_ENV=production node server.js"
   },
   "dependencies": {
+    "lucide-react": "^0.563.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },

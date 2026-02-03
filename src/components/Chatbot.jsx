@@ -1,5 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
+import { RotateCcw } from 'lucide-react';
 import './Chatbot.css';
 
 // Generar un sessionId único para esta sesión
@@ -138,29 +139,39 @@ function Chatbot() {
       
       <div className="chatbot-window">
         <header className="chatbot-header">
-          <h1 className="chatbot-header-title">Propuestas de Negocio</h1>
-          <p className="chatbot-header-subtitle">VML The Cocktail • Asistente</p>
+          <p className="chatbot-header-subtitle"><span className='company-name'>VML The Cocktail</span> • Asistente</p>
+          <h1 className="chatbot-header-title">Propuesta Estratégica <span className='client-name'>Santander</span></h1>
           <button 
             className="chatbot-reset-btn" 
             onClick={resetConversation}
             title="Nueva conversación"
           >
-            🔄
+             <RotateCcw className='chatbot-reset-icon' />
+             <span className='chatbot-reset-text'>REINICIAR</span>
           </button>
-          <div className="chatbot-header-divider" aria-hidden="true"></div>
+        
         </header>
+
         <div className="chatbot-messages" ref={messagesContainerRef}>
-          {messages.map((msg, i) =>
-            msg.thinking ? (
-              <div key={i} className="chatbot-msg assistant thinking" aria-live="polite">
-                <span className="thinking-dots">
-                  <span></span><span></span><span></span>
-                </span>
-              </div>
-            ) : (
-              <div key={i} className={`chatbot-msg ${msg.role}`}>{msg.content}</div>
-            )
-          )}
+  {messages.map((msg, i) =>
+msg.thinking ? (
+  <div key={i} className="chatbot-msg assistant thinking" aria-live="polite">
+    <span className="thinking-dots">
+      <span></span><span></span><span></span>
+    </span>
+  </div>
+) : (
+  <div key={i}>
+    <div className={`chatbot-role ${msg.role === 'user' ? 'chatbot-role-user' : ''}`}>
+      {msg.role === 'assistant' && <div className='dot'/>}
+      <span className='chatbot-role-name'>
+        {msg.role === 'user' ? 'TÚ' : 'VML ASSISTANT'}
+      </span>
+    </div>
+    <div className={`chatbot-msg ${msg.role}`}>{msg.content}</div>
+  </div>
+)
+)}
           <div className="chatbot-messages-anchor" aria-hidden="true" />
         </div>
         <form className="chatbot-form" onSubmit={sendMessage}>
