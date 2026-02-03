@@ -70,7 +70,12 @@ async function runAssistant(threadId, assistantId, message) {
   const messages = await openai.beta.threads.messages.list(threadId);
   const lastMessage = messages.data[0];
   
-  return lastMessage.content[0]?.text?.value || 'No hay respuesta';
+  let reply = lastMessage.content[0]?.text?.value || 'No hay respuesta';
+  
+  // Limpiar anotaciones de fuentes como【6:3†source】
+  reply = reply.replace(/【[^】]*】/g, '');
+  
+  return reply;
 }
 
 /**
