@@ -221,6 +221,7 @@ transform: rotate(-90deg); /* Rotación antihoraria */
 }
 .client-name{
   font-weight: 600;
+  color: rgb(219, 2, 2);
 }
 .divider-container { display: flex; align-items: center; gap: 1rem; padding: 1rem 0; }
 .divider-line { height: 1px; flex: 1; background-color: var(--vml-beige); }
@@ -296,21 +297,21 @@ transform: rotate(-90deg); /* Rotación antihoraria */
 
 .chatbot-msg.assistant {
   align-self: flex-start;
-  background: oklch(98.463% 0.00181 249.248 / 0.5);
-  color: oklch(37.3% 0.034 259.733);
+  background: oklch(96% 0.008 250);
+  color: oklch(30% 0.03 260);
   border-radius: 6px 24px 24px 24px;
-  border: 1px solid oklch(96.696% 0.00298 264.792 / 0.499);
+  border: 1px solid oklch(90% 0.01 260);
   
 }
 
 .chatbot-msg.thinking {
-  background: oklch(98.463% 0.00181 249.248 / 0.5);
-  color: oklch(37.3% 0.034 259.733);
+  background: oklch(96% 0.008 250);
+  color: oklch(30% 0.03 260);
   font-style: normal;
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  border: 1px solid oklch(96.696% 0.00298 264.792 / 0.499);
+  border: 1px solid oklch(90% 0.01 260);
   border-radius: 20px 20px 20px 6px;
   width: 10%;
 }
@@ -373,7 +374,7 @@ transform: rotate(-90deg); /* Rotación antihoraria */
   margin: 1.25rem 0 0.75rem 0;
   font-weight: 600;
   line-height: 1.4;
-  color: var(--vml-white);
+  color: var(--vml-dark);
 }
 
 .chatbot-msg h1:first-child,
@@ -390,7 +391,7 @@ transform: rotate(-90deg); /* Rotación antihoraria */
 /* Negritas */
 .chatbot-msg strong {
   font-weight: 600;
-  color: var(--vml-white);
+  color: var(--vml-dark);
 }
 
 .chatbot-msg.user strong {
@@ -550,8 +551,8 @@ box-shadow:
 }
 
 .chatbot-form button {
-  background: var(--vml-white);
-  color: var(--vml-black);
+  background: var(--vml-dark);
+  color: var(--vml-white);
   border: none;
   border-radius: 24px;
   padding: 1rem 1.5rem;
@@ -568,12 +569,13 @@ box-shadow:
   min-width: 110px;
   position:absolute;
   right: 3rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
 .chatbot-form button:hover:not(:disabled) {
-  background: var(--vml-white-soft);
+  background: var(--vml-black);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
 }
 
 .chatbot-form button:active:not(:disabled) {
@@ -581,7 +583,7 @@ box-shadow:
 }
 
 .chatbot-form button:disabled {
-  background: var(--vml-black);
+  background: var(--vml-gray-light);
   color: var(--vml-text-muted);
   cursor: not-allowed;
   transform: none;

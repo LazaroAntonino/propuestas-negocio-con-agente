@@ -142,7 +142,7 @@ function Chatbot() {
       <div className="chatbot-window">
         <header className="chatbot-header">
           <p className="chatbot-header-subtitle"><span className='company-name'>VML The Cocktail</span> • Asistente</p>
-          <h1 className="chatbot-header-title">Propuesta Estratégica <span className='client-name'>Santander</span></h1>
+          <h1 className="chatbot-header-title">Servicios de Analítica y CRO para <span className='client-name'>MAPFRE</span></h1>
           <button 
             className="chatbot-reset-btn" 
             onClick={resetConversation}
