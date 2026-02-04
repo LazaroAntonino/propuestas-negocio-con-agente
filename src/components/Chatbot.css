@@ -354,6 +354,133 @@ transform: rotate(-90deg); /* Rotación antihoraria */
   }
 }
 
+/* ============ MARKDOWN CONTENT STYLING ============ */
+/* Párrafos */
+.chatbot-msg p {
+  margin: 0 0 1rem 0;
+  line-height: 1.7;
+}
+
+.chatbot-msg p:last-child {
+  margin-bottom: 0;
+}
+
+/* Encabezados */
+.chatbot-msg h1,
+.chatbot-msg h2,
+.chatbot-msg h3,
+.chatbot-msg h4 {
+  margin: 1.25rem 0 0.75rem 0;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--vml-white);
+}
+
+.chatbot-msg h1:first-child,
+.chatbot-msg h2:first-child,
+.chatbot-msg h3:first-child,
+.chatbot-msg h4:first-child {
+  margin-top: 0;
+}
+
+.chatbot-msg h3 {
+  font-size: 1.1rem;
+}
+
+/* Negritas */
+.chatbot-msg strong {
+  font-weight: 600;
+  color: var(--vml-white);
+}
+
+.chatbot-msg.user strong {
+  color: var(--vml-black);
+}
+
+/* Listas */
+.chatbot-msg ul,
+.chatbot-msg ol {
+  margin: 0.75rem 0;
+  padding-left: 1.5rem;
+}
+
+.chatbot-msg ul {
+  list-style-type: disc;
+}
+
+.chatbot-msg ol {
+  list-style-type: decimal;
+}
+
+.chatbot-msg li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.chatbot-msg li:last-child {
+  margin-bottom: 0;
+}
+
+/* Listas anidadas */
+.chatbot-msg li > ul,
+.chatbot-msg li > ol {
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
+
+/* Código inline */
+.chatbot-msg code {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+  font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+}
+
+.chatbot-msg.user code {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+/* Bloques de código */
+.chatbot-msg pre {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 0.75rem 0;
+}
+
+.chatbot-msg pre code {
+  background: none;
+  padding: 0;
+}
+
+/* Blockquotes */
+.chatbot-msg blockquote {
+  border-left: 3px solid var(--vml-gray-light);
+  margin: 0.75rem 0;
+  padding-left: 1rem;
+  color: var(--vml-text-muted);
+  font-style: italic;
+}
+
+/* Links */
+.chatbot-msg a {
+  color: #7eb8ff;
+  text-decoration: underline;
+}
+
+.chatbot-msg a:hover {
+  color: #a8d0ff;
+}
+
+/* Líneas horizontales */
+.chatbot-msg hr {
+  border: none;
+  border-top: 1px solid var(--vml-gray);
+  margin: 1rem 0;
+}
+
 /* ============ INPUT FORM ============ */
 .dot{
   width: 0.5rem; height: 0.5rem; border-radius: 9999px; background-color: red; animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;

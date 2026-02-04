@@ -1,6 +1,8 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { RotateCcw } from 'lucide-react';
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import './Chatbot.css';
 
 // Generar un sessionId único para esta sesión
@@ -153,25 +155,27 @@ function Chatbot() {
         </header>
 
         <div className="chatbot-messages" ref={messagesContainerRef}>
-  {messages.map((msg, i) =>
-msg.thinking ? (
-  <div key={i} className="chatbot-msg assistant thinking" aria-live="polite">
-    <span className="thinking-dots">
-      <span></span><span></span><span></span>
-    </span>
-  </div>
-) : (
-  <div key={i}>
-    <div className={`chatbot-role ${msg.role === 'user' ? 'chatbot-role-user' : ''}`}>
-      {msg.role === 'assistant' && <div className='dot'/>}
-      <span className='chatbot-role-name'>
-        {msg.role === 'user' ? 'TÚ' : 'VML ASSISTANT'}
-      </span>
-    </div>
-    <div className={`chatbot-msg ${msg.role}`}>{msg.content}</div>
-  </div>
-)
-)}
+          {messages.map((msg, i) =>
+            msg.thinking ? (
+              <div key={i} className="chatbot-msg assistant thinking" aria-live="polite">
+                <span className="thinking-dots">
+                  <span></span><span></span><span></span>
+                </span>
+              </div>
+            ) : (
+              <div key={i}>
+                <div className={`chatbot-role ${msg.role === 'user' ? 'chatbot-role-user' : ''}`}>
+                  {msg.role === 'assistant' && <div className='dot'/>}
+                  <span className='chatbot-role-name'>
+                    {msg.role === 'user' ? 'TÚ' : 'VML ASSISTANT'}
+                  </span>
+                </div>
+                <div className={`chatbot-msg ${msg.role}`}>
+                  <Markdown remarkPlugins={[remarkGfm]}>{msg.content}</Markdown>
+                </div>
+              </div>
+            )
+          )}
           <div className="chatbot-messages-anchor" aria-hidden="true" />
         </div>
         <form className="chatbot-form" onSubmit={sendMessage}>
