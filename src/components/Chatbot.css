@@ -528,12 +528,12 @@ justify-content: flex-end;
   border-radius: 30px;
   border: 1px solid oklch(92.8% 0.006 264.531);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 0.95rem;
+  font-size: 16px; /* Evita zoom en iOS */
   font-weight: 400;
   outline: none;
   background: oklch(98.5% 0.002 247.839);
   color: var(--vml-gray-dark);
-  transition: all 0.25s var(--transition-smooth);
+  transition: border-color 0.25s var(--transition-smooth), box-shadow 0.25s var(--transition-smooth);
 }
 
 .chatbot-form input::placeholder {
@@ -541,13 +541,9 @@ justify-content: flex-end;
 }
 
 .chatbot-form input:focus {
-border: 5px solid transparent;
-border-radius: 30px;
-
-background: oklch(98.5% 0.002 247.839);
-box-shadow: 
-  0 2px 12px rgba(0,0,0,0.15),
-  0 0 0 3px rgba(255,255,255,0.04);
+  border: 1px solid oklch(85% 0.02 260);
+  background: oklch(98.5% 0.002 247.839);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
 }
 
 .chatbot-form button {
